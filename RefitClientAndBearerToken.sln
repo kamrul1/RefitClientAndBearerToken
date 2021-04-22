@@ -6,6 +6,9 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{D31B8688-8203-4F06-8BA2-41D6CEB0C6AC}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{ED2AE523-7C0F-4740-88BC-36ABA01F7945}"
+	ProjectSection(SolutionItems) = preProject
+		PostmanSamples\RefitClientAndBearerToken.postman_collection.json = PostmanSamples\RefitClientAndBearerToken.postman_collection.json
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RefitClientAndBearerToken.IDP", "RefitClientAndBearerToken.IDP\RefitClientAndBearerToken.IDP.csproj", "{12A8B1C8-B34D-4998-9677-6421E1CE7562}"
 EndProject

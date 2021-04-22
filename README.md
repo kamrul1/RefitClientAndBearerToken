@@ -1,7 +1,7 @@
 
 # Refit Client And Bearer Token
 
-This is a demo showing how to use Refit client to call an API projected by identity provider.  
+This is a demo showing how to use Refit client to call an API protected by identity provider.  
 
 ##### There are 4 projects in this solution.  There purpose is:
 ---
@@ -117,3 +117,7 @@ This will return the weather Json:
 
 ---
 appsettings.json is included to show the variable passed.  In production you would store these in environment variables or swap them out in the build. 
+
+
+---
+[Postman](https://www.postman.com/) collection is included in folder PostmanSamples, which you can use to test using your REST API testing tool.
