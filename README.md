@@ -3,13 +3,13 @@
 
 This is a demo showing how to use Refit client to call an API protected by identity provider.  
 
-##### There are 4 projects in this solution.  There purpose is:
+##### There are 4 projects in this solution.  Their purpose is:
 ---
 ##### RefitClientAndBearerToken.ConsoleClient
 
 This console project shows how to use Refit client to firstly get a bearer authorisation token from and Identity Provider and then use it to call a web api which requires it.
 
-Key things to note are attribute in interface file IApi.cs
+Key things to note are attribute in Refit interface file IApi.cs
 
 **[Body(BodySerializationMethod.UrlEncoded)]**
 This caused the content type to ***application/x-www-form-urlencoded***
@@ -23,13 +23,16 @@ This is the parameter when added causes the Authorization bearer token to be add
 
 ##### RefitClientAndBearerToken.IDP
 
-This is the main identity provider, self contained in this solution.  This can be swapped out for any external IDP, which support OpenID Connect.
+This is the main identity provider, self contained in this solution.  I have used Identity Server 4 so that I can include its configuration in this project.  This can be swapped out for any external IDP, which support OpenID Connect.
 
 OpenID Connect Discovery Document:
 https://localhost:5001/.well-known/openid-configuration
 
 Configure and Setup IdentityServer4 using the guide at:
 https://www.scottbrady91.com/Identity-Server/Getting-Started-with-IdentityServer-4
+
+
+See the Config.cs file for Resource setup.
 
 
 Test to see it using curl, get a bearer token:
@@ -56,7 +59,7 @@ This will return the following token:
 }
 ```
 
-In order to make default some of the values, a controller can be setup to call the /connect/token endpoint.  This way the user will only need to supply their username and password. This feature is implemented in the TokenController.  This allows the IDP to be called like:
+In order to make default some of the values, a controller can be setup to call the /connect/token endpoint.  This way the user will only need to supply their username and password.  The user does not need to supply the scope and grant_type fields.  This feature is implemented in the TokenController.  This allows the IDP to be called like:
 
 ```
 curl --location --request POST 'https://localhost:5001/api/token' \
@@ -73,6 +76,16 @@ This project has mainly PCO models and a extension method added to the TokenResp
 ##### RefitClientAndBearerToken.WebApi
 
 This is simple web api, that is rigged to require the bearer token from the IDP.  Once you have the bearer token you can call it using:
+
+The key lines which configures all calls to it to have a bearer token from the IDP is in Startup.cs:
+```
+services.AddAuthentication("Bearer")
+.AddIdentityServerAuthentication("Bearer", options =>
+{
+    options.ApiName = Configuration["RefitClientAndBearerTokenIDP:apiName"];
+    options.Authority = Configuration["RefitClientAndBearerTokenIDP:authority"];
+});
+```
 
 Test to see it using curl, get the data from the Web API controller, RefitClientAndBearerToken.WebApi project, with the bear token
 ```
